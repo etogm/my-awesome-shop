@@ -1,0 +1,16 @@
+GET https://github.com/login/oauth/authorize?client_id=4859a02eb577a7db4e4b&redirect_uri=https://localhost:7114/oauth/callback&login=etogm&scope=user&state=asddwd
+
+###
+
+POST https://github.com/login/oauth/access_token?client_id=4859a02eb577a7db4e4b&client_secret=50606605031cad9bee3e110b0d0d59ed347df778&code=39ec8eb654c95004f95c&redirect_uri=https://localhost:7114/oauth/callback
+
+
+###
+
+GET https://localhost:7114/api/v1/products/test
+Authorization: Bearer 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
+
+###
+
+GET https://api.github.com/user
+Authorization: Bearer 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

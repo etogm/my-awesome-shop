@@ -10,15 +10,17 @@ namespace MyAwesomeShop.Catalog.Application.Services;
 
 internal partial class ProductService : IProductService
 {
-    public Task<ProductDto?> GetProductAsync(Guid id)
+    public async Task<ProductDto?> GetProductAsync(Guid id)
     {
-        return _context.Products
-            .ProjectToType<ProductDto>()
+        var product = await _context.Products
             .FirstOrDefaultAsync(p => p.Id == id);
+
+        return product?.Adapt<ProductDto>();
     }
 
     public Task<PaginatedList<ProductDto>> GetProductsAsync(int currentPage, int perPage)
     {
-        return PaginatedList<ProductDto>.CreateAsync(_context.Products.ProjectToType<ProductDto>(), currentPage, perPage);
+        return PaginatedList<ProductDto>
+            .CreateAsync(_context.Products.ProjectToType<ProductDto>(), currentPage, perPage);
     }
 }

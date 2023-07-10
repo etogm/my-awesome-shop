@@ -14,16 +14,21 @@ try
 
     builder.Host.UseSerilog();
 
-    builder.Services.AddCatalogInfrastructure();
+    builder.Services.AddCatalogInfrastructure(builder.Configuration);
     builder.Services.AddCatalogApplication();
     builder.Services.AddCatalogWebApi();
 
     var app = builder.Build();
 
-    app.UseWebApi();
+    app.UseCatalogInfrastructure();
+    app.UseWebApi(builder.Environment);
     app.MapControllers();
 
     app.Run();
+}
+catch (HostAbortedException)
+{
+    Log.Information("Host aborted");
 }
 catch (Exception ex)
 {
