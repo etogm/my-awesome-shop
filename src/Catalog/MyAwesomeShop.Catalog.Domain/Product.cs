@@ -1,5 +1,4 @@
-﻿using MyAwesomeProject.Shared;
-
+﻿using MyAwesomeShop.Shared;
 using MyAwesomeShop.Shared.Domain;
 
 namespace MyAwesomeShop.Catalog.Domain;
@@ -35,6 +34,8 @@ public class Product : Entity
         Name = name;
         Description = description;
         Price = price;
+
+        AddDomainEvent(new ProductUpdated(Id, Name, Price));
 
         return this;
     }

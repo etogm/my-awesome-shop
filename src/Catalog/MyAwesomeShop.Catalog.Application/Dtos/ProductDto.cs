@@ -1,4 +1,4 @@
-﻿using MyAwesomeProject.Shared;
+﻿using MyAwesomeShop.Shared;
 
 namespace MyAwesomeShop.Catalog.Application.Dtos;
 

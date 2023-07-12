@@ -14,3 +14,19 @@ Authorization: Bearer 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
 
 GET https://api.github.com/user
 Authorization: Bearer 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
+
+
+###
+
+POST https://localhost:7065/api/v1/users/ae828df0-0c02-4f14-b4e5-c81ead4db879/products
+Content-Type: application/json
+{
+    "id": "ae828df0-0c02-4f14-b4e5-c81ead4db879",
+    "name": "product",
+    "description": "desc",
+    "amount": 1.0,
+    "price": {
+        "amount": 10.0,
+        "currency": 0
+    }
+}

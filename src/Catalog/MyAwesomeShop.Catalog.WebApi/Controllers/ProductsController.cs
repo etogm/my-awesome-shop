@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
+using MyAwesomeShop.Basket;
 using MyAwesomeShop.Catalog.Application.Abstractions;
 using MyAwesomeShop.Catalog.Application.Dtos;
-using MyAwesomeShop.Shared.Application.Exceptions;
+using MyAwesomeShop.Shared.Application;
+using MyAwesomeShop.Shared.Infrastructure.PubSub;
 
 namespace MyAwesomeShop.Catalog.WebApi.Controllers;
 
@@ -27,6 +28,12 @@ public class ProductsController : ControllerBase
         return product == null ? TypedResults.NotFound() : TypedResults.Ok(product);
     }
 
+    [HttpGet()]
+    public async Task<Ok<PaginatedList<ProductDto>>> GetProductsAsync(int currentPage = 1, int perPage = 50)
+    {
+        return TypedResults.Ok(await _productService.GetProductsAsync(currentPage, perPage));
+    }
+
     [HttpPost]
     public async Task<Results<BadRequest, Created<ProductDto>>> CreateProductAsync(CreateProductRequest request)
     {
@@ -44,30 +51,16 @@ public class ProductsController : ControllerBase
     [HttpPut]
     public async Task<Results<BadRequest, Ok<ProductDto>>> UpdateProductAsync(UpdateProductRequest request)
     {
-        throw new MyAwesomeShopException("vot takaya vot fignya");
-        return TypedResults.BadRequest();
         var product = await _productService.UpdateProductAsync(request);
 
         return TypedResults.Ok(product);
     }
 
     [HttpDelete]
-    public async Task<Results<BadRequest, Ok>> DeleteProductAsync(Guid id)
+    public async Task<Ok> DeleteProductAsync(Guid id)
     {
-        if (!ModelState.IsValid)
-        {
-            return TypedResults.BadRequest();
-        }
-
         await _productService.DeleteProductAsync(id);
 
         return TypedResults.Ok();
-    }
-
-    [Authorize]
-    [HttpGet("test")]
-    public string Test()
-    {
-        return "test";
     }
 }

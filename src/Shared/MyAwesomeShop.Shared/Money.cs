@@ -1,4 +1,4 @@
-﻿namespace MyAwesomeProject.Shared;
+﻿namespace MyAwesomeShop.Shared;
 
 public class Money
 {
@@ -15,6 +15,11 @@ public class Money
     public decimal Amount { get; set; }
 
     public Currency Currency { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Amount} {Currency}";
+    }
 }
 
 public enum Currency

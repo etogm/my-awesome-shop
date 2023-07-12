@@ -47,7 +47,7 @@ namespace MyAwesomeShop.Catalog.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MyAwesomeShop.Catalog.Domain.Product", b =>
                 {
-                    b.OwnsOne("MyAwesomeProject.Shared.Money", "Price", b1 =>
+                    b.OwnsOne("MyAwesomeShop.Shared.Money", "Price", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("uuid")

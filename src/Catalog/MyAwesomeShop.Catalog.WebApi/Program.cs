@@ -1,40 +1,19 @@
 using MyAwesomeShop.Catalog.Application;
 using MyAwesomeShop.Catalog.Infrastructure;
 using MyAwesomeShop.Catalog.WebApi;
+using MyAwesomeShop.Shared.WebApi;
 
-using Serilog;
+var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateLogger();
+builder.Host.UseCustomLogger();
 
-try
-{
-    var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCatalogInfrastructure(builder.Configuration);
+builder.Services.AddCatalogApplication();
+builder.Services.AddCatalogWebApi();
 
-    builder.Host.UseSerilog();
+var app = builder.Build();
 
-    builder.Services.AddCatalogInfrastructure(builder.Configuration);
-    builder.Services.AddCatalogApplication();
-    builder.Services.AddCatalogWebApi();
+app.UseWebApiSwagger();
+app.MapControllers();
 
-    var app = builder.Build();
-
-    app.UseCatalogInfrastructure();
-    app.UseWebApi(builder.Environment);
-    app.MapControllers();
-
-    app.Run();
-}
-catch (HostAbortedException)
-{
-    Log.Information("Host aborted");
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Application terminated unexpectedly");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+app.Run();

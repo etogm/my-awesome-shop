@@ -2,7 +2,7 @@
 
 namespace MyAwesomeShop.Shared.Application;
 
-public class PaginatedList<T>
+public class PaginatedList<T> where T : class
 {
     public PaginatedList(IReadOnlyCollection<T> items, int count, int currentPage, int perPage)
     {
@@ -20,14 +20,10 @@ public class PaginatedList<T>
 
     public int TotalCount { get; }
 
-    public bool HasPreviousPage => CurrentPage > 1;
-
-    public bool HasNextPage => CurrentPage < TotalPages;
-
     public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int currentPage, int perPage)
     {
         var count = await source.CountAsync();
-        var items = await source.Skip((currentPage - 1) * perPage).Take(perPage).ToListAsync();
+        var items = await source.AsNoTracking().Skip((currentPage - 1) * perPage).Take(perPage).ToListAsync();
 
         return new PaginatedList<T>(items, count, currentPage, perPage);
     }

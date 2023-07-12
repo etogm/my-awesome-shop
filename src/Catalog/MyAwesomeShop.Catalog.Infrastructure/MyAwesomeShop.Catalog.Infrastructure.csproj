@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\MyAwesomeShop.Shared.Infrastructure\MyAwesomeShop.Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\MyAwesomeShop.Catalog.Application\MyAwesomeShop.Catalog.Application.csproj" />
     <ProjectReference Include="..\MyAwesomeShop.Catalog.Domain\MyAwesomeShop.Catalog.Domain.csproj" />
   </ItemGroup>
