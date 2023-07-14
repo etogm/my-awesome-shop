@@ -6,4 +6,9 @@ public abstract class Entity : EntityBase<Guid>
     {
         Id = Guid.NewGuid();
     }
+
+    public Entity(Guid id)
+    {
+        Id = id;
+    }
 }

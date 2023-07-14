@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
 
-using MyAwesomeShop.Basket;
-using MyAwesomeShop.Catalog.Application.Abstractions;
-using MyAwesomeShop.Catalog.Application.Dtos;
-using MyAwesomeShop.Shared.Application;
-using MyAwesomeShop.Shared.Infrastructure.PubSub;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using MyAwesomeShop.Catalog.Application.Products;
+using MyAwesomeShop.Shared.Application.Extensions;
 
 namespace MyAwesomeShop.Catalog.WebApi.Controllers;
 
@@ -14,44 +12,44 @@ namespace MyAwesomeShop.Catalog.WebApi.Controllers;
 [Route("/api/v1/[controller]")]
 public class ProductsController : ControllerBase
 {
-    private readonly IProductService _productService;
+    private readonly IMediator _mediator;
 
-    public ProductsController(IProductService productService)
+    public ProductsController(IMediator mediator)
     {
-        _productService = productService;
+        _mediator = mediator;
     }
 
     [HttpGet("{id}")]
     public async Task<Results<NotFound, Ok<ProductDto>>> GetProductAsync(Guid id)
     {
-        var product = await _productService.GetProductAsync(id);
+        var product = await _mediator.Send(new GetProductQuery(id));
         return product == null ? TypedResults.NotFound() : TypedResults.Ok(product);
     }
 
     [HttpGet()]
-    public async Task<Ok<PaginatedList<ProductDto>>> GetProductsAsync(int currentPage = 1, int perPage = 50)
+    public async Task<Ok<PaginatedList<ProductDto>>> GetProductsAsync([FromQuery]GetProductsQuery request)
     {
-        return TypedResults.Ok(await _productService.GetProductsAsync(currentPage, perPage));
+        return TypedResults.Ok(await _mediator.Send(request));
     }
 
     [HttpPost]
-    public async Task<Results<BadRequest, Created<ProductDto>>> CreateProductAsync(CreateProductRequest request)
+    public async Task<Results<BadRequest, Created<ProductDto>>> CreateProductAsync(CreateProductCommand request)
     {
         if (!ModelState.IsValid)
         {
             return TypedResults.BadRequest();
         }
 
-        var product = await _productService.CreateProductAsync(request);
+        var product = await _mediator.Send(request);
 
         var location = Url.Action(nameof(GetProductAsync), new { id = product.Id }) ?? $"/{product.Id}";
         return TypedResults.Created(location, product);
     }
 
     [HttpPut]
-    public async Task<Results<BadRequest, Ok<ProductDto>>> UpdateProductAsync(UpdateProductRequest request)
+    public async Task<Results<BadRequest, Ok<ProductDto>>> UpdateProductAsync(UpdateProductCommand request)
     {
-        var product = await _productService.UpdateProductAsync(request);
+        var product = await _mediator.Send(request);
 
         return TypedResults.Ok(product);
     }
@@ -59,7 +57,7 @@ public class ProductsController : ControllerBase
     [HttpDelete]
     public async Task<Ok> DeleteProductAsync(Guid id)
     {
-        await _productService.DeleteProductAsync(id);
+        await _mediator.Send(id);
 
         return TypedResults.Ok();
     }

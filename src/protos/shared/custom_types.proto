@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "MyAwesomeShop.Shared.Grpc";
+
+package shared.customTypes;
+
+// Example: 12345.6789 -> { units = 12345, nanos = 678900000 }
+message DecimalValue {
+
+    // Whole units part of the amount
+    int64 units = 1;
+
+    // Nano units of the amount (10^-9)
+    // Must be same sign as units
+    sfixed32 nanos = 2;
+}
+
+enum Currency {
+    RUB = 0;
+}
+
+message Money {
+    DecimalValue amount = 1;
+    Currency currency = 2;
+}

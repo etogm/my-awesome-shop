@@ -6,7 +6,7 @@ public class EntityNotFoundException : MyAwesomeShopException
     {
     }
 
-    public EntityNotFoundException(string entityName, string key) : base(DefaultTitle, $"{entityName} (${key}) не найдена")
+    public EntityNotFoundException(string entityName, string key) : base(DefaultTitle, $"{entityName} (${key}) не найден(-а).")
     {
     }
 

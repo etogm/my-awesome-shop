@@ -1,6 +1,12 @@
-﻿using MyAwesomeShop.Basket.Domain;
+﻿using Grpc.Net.Client;
+
+using MyAwesomeShop.Basket.Domain;
 using MyAwesomeShop.Basket.Repositories;
-using MyAwesomeShop.Shared.Infrastructure.PubSub;
+using MyAwesomeShop.Catalog.Application.IntegrationEvents;
+using MyAwesomeShop.Catalog.Grpc;
+using MyAwesomeShop.Shared.Application.IntegrationEvent;
+
+using static MyAwesomeShop.Catalog.Grpc.Catalog;
 
 namespace MyAwesomeShop.Basket;
 
@@ -8,24 +14,37 @@ public static class WebApi
 {
     public static WebApplication MapBasketWebApi(this WebApplication app)
     {
-        app.MapGet("/api/v1/users/{userId}/products", async (Guid userId, IBasketRepository repository, IPubSub pubSub) =>
+        app.MapGet("/api/v1/users/{userId}/products", (Guid userId, IBasketRepository repository, IEventBus pubSub) =>
         {
-            var userBasket = await repository.GetBasketAsync(userId);
-
-            return userBasket?.Products ?? new HashSet<Product>();
+            return repository.GetBasketAsync(userId);
         });
 
-        app.MapPost("/api/v1/users/{userId}/products", async (Guid userId, Product product, IBasketRepository repository) =>
+        app.MapPost("/api/v1/users/{userId}/products", async (Guid userId, Guid productId, float quantity, IBasketRepository repository) =>
         {
-            var userBasket = await repository.GetBasketAsync(userId);
+            var product = await repository.GetProductFromBasketAsync(userId, productId);
 
-            if (userBasket == null)
+            if (product != null)
             {
-                userBasket = new UserBasket(userId);
+                product.Quantity += quantity;
+            }
+            else
+            {
+                var channel = GrpcChannel.ForAddress("https://localhost:62511");
+                var catalogClient = new CatalogClient(channel);
+
+                var response = await catalogClient.GetProductAsync(new GetProductRequest
+                {
+                    Id = productId.ToString()
+                });
+
+                product = new BasketProduct(
+                    productId, 
+                    response.Name,
+                    quantity,
+                    new Shared.Money(response.Price.Amount, (Shared.Currency)response.Price.Currency));
             }
 
-            userBasket.AddOrUpdateProduct(product);
-            return await repository.AddOrUpdateBasketAsync(userBasket);
+            return await repository.AddOrUpdateBasketAsync(userId, product);
         });
 
         return app;
@@ -33,7 +52,9 @@ public static class WebApi
 
     public static WebApplication UseBasketSub(this WebApplication app)
     {
-        var pubSub = app.Services.GetRequiredService<IPubSub>();
+        var eventBus = app.Services.GetRequiredService<IEventBus>();
+
+        eventBus.SubscribeAsync<ProductUpdatedIntegrationEvent>();
 
         return app;
     }

@@ -15,7 +15,7 @@ public static class SwaggerExtensions
 
     public static IApplicationBuilder UseWebApiSwagger(this IApplicationBuilder app)
     {
-        app.UseWebApiSwagger();
+        app.UseSwagger();
         app.UseSwaggerUI();
 
         return app;

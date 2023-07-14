@@ -1,5 +1,5 @@
-﻿namespace MyAwesomeShop.Shared.Domain;
+﻿using MediatR;
 
-public interface IDomainEvent
-{
-}
+namespace MyAwesomeShop.Shared.Domain;
+
+public interface IDomainEvent : INotification { }

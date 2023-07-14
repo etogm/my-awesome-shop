@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using MyAwesomeShop.Catalog.Application.Abstractions;
-using MyAwesomeShop.Catalog.Application.Services;
+using MyAwesomeShop.Shared.Application;
 
 namespace MyAwesomeShop.Catalog.Application;
 
@@ -9,7 +8,8 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddCatalogApplication(this IServiceCollection services)
     {
-        services.AddScoped<IProductService, ProductService>();
+        services.AddMapper();
+        services.AddMessaging(typeof(ConfigureServices));
 
         return services;
     }

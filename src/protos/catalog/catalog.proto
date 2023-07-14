@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option csharp_namespace = "MyAwesomeShop.Catalog.Grpc";
+
+import "shared.customTypes.proto";
+
+package catalog;
+
+service Catalog {
+	rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+}
+
+message GetProductRequest {
+	string id = 1;
+}
+
+message GetProductResponse {
+	string id = 1;
+	string name = 2;
+	Money price = 3;
+}
+
+message DecimalValue {
+
+    int64 units = 1;
+    sfixed32 nanos = 2;
+}
+
+enum Currency {
+    RUB = 0;
+}
+
+message Money {
+    DecimalValue amount = 1;
+    Currency currency = 2;
+}
