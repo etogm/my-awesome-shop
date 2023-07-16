@@ -6,7 +6,7 @@ namespace MyAwesomeShop.Shared.Infrastructure.EventBus;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddPubSub(this IServiceCollection services, Action<EventBusOptions> options)
+    public static IServiceCollection AddEventBus(this IServiceCollection services, Action<EventBusOptions> options)
     {
         services.Configure(options);
         services.AddSingleton<IEventBus, RedisEventBus>();
@@ -15,11 +15,11 @@ public static class ConfigureServices
         return services;
     }
 
-    public static IServiceCollection AddPubSubHandler<TMessage, THandler>(this IServiceCollection services)
+    public static IServiceCollection AddIntegrationEventHandler<TMessage, THandler>(this IServiceCollection services)
         where THandler : class, IIntegrationEventHandler<TMessage>
         where TMessage : IntegrationEvent
     {
-        services.AddSingleton<IIntegrationEventHandler<TMessage>, THandler>();
+        services.AddScoped<IIntegrationEventHandler<TMessage>, THandler>();
         return services;
     }
 }

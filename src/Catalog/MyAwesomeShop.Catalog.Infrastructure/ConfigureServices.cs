@@ -21,7 +21,7 @@ public static class ConfigureServices
         });
         services.AddScoped<ICatalogContext>(provider => provider.GetRequiredService<CatalogContext>());
 
-        services.AddPubSub(options =>
+        services.AddEventBus(options =>
         {
             options.Configuration = "localhost:6379";
         });

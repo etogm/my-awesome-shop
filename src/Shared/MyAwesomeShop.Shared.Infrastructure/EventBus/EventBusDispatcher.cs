@@ -16,6 +16,6 @@ internal class EventBusDispatcher : IEventBusDispatcher
     public Task DispatchAsync<TMessage>(TMessage message, CancellationToken token) where TMessage : IntegrationEvent
     {
         var handle = _serviceProvider.GetRequiredService<IIntegrationEventHandler<TMessage>>();
-        return handle.HandleAsync(message);
+        return handle.Handle(message);
     }
 }

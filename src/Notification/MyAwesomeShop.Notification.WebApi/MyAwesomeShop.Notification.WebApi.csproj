@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Catalog\MyAwesomeShop.Catalog.Application\MyAwesomeShop.Catalog.Application.csproj" />
+    <ProjectReference Include="..\..\Shared\MyAwesomeShop.Shared.Infrastructure\MyAwesomeShop.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Shared\MyAwesomeShop.Shared.WebApi\MyAwesomeShop.Shared.WebApi.csproj" />
+  </ItemGroup>
+
+</Project>

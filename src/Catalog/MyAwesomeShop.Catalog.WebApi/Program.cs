@@ -18,6 +18,8 @@ builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 var app = builder.Build();
 
+app.UseCors(policy => policy.AllowAnyOrigin());
+
 app.MapGrpcService<GrpcCatalogService>();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

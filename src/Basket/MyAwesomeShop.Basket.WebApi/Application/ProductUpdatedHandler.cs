@@ -13,7 +13,7 @@ internal class ProductUpdatedHandler : IIntegrationEventHandler<ProductUpdatedIn
         _repository = repository;
     }
 
-    public Task HandleAsync(ProductUpdatedIntegrationEvent message)
+    public Task Handle(ProductUpdatedIntegrationEvent message)
     {
         return _repository.UpdateProductAsync(message.ProductId, message.Name, message.Price);
     }

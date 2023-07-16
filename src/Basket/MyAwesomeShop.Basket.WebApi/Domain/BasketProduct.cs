@@ -7,7 +7,6 @@ public class BasketProduct : Entity
 {
     private BasketProduct()
     {
-        // For mapster
     }
 
     public BasketProduct(Guid id, string name, float quantity, Money price) : base(id)

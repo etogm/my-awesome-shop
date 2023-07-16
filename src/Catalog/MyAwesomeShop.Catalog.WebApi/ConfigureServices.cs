@@ -6,6 +6,8 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddCatalogWebApi(this IServiceCollection services)
     {
+        services.AddCors();
+
         services.AddRouting(options =>
         {
             options.LowercaseUrls = true;

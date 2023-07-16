@@ -15,14 +15,15 @@ public sealed class ProductUpdatedHandler<TNotification> : IDomainEventHandler<P
 
     private readonly IEventBus _eventBus;
 
-    public ProductUpdatedHandler(ILogger<ProductUpdatedHandler<TNotification>> looger)
+    public ProductUpdatedHandler(ILogger<ProductUpdatedHandler<TNotification>> looger, IEventBus eventBus)
     {
         _logger = looger;
+        _eventBus = eventBus;
     }
 
     public async Task Handle(ProductUpdated notification, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Notification: " + notification.ToString());
+        _logger.LogInformation("Notification: {info}", notification.ToString());
         await _eventBus.PublishAsync(new ProductUpdatedIntegrationEvent(notification.Id, notification.Name, notification.Price));
     }
 }

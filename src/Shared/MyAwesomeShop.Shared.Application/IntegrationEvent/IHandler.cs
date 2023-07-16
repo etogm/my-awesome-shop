@@ -2,5 +2,5 @@
 
 public interface IIntegrationEventHandler<T> where T : IntegrationEvent
 {
-    Task HandleAsync(T message);
+    Task Handle(T message);
 }
