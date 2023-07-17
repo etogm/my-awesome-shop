@@ -34,7 +34,7 @@ public class CatalogContext : DbContext, ICatalogContext
 
         foreach (var @event in entitiesWithEvents)
         {
-            await _mediator.Publish(@event);
+            await _mediator.Publish(@event, cancellationToken);
         }
 
         return await base.SaveChangesAsync(cancellationToken);

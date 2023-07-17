@@ -21,7 +21,7 @@ internal class GetProductQueryHandler : IQueryHandler<GetProductQuery, ProductDt
     public async Task<ProductDto?> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
         var product = await _context.Products
-            .FirstOrDefaultAsync(p => p.Id == request.Id);
+            .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
         return product?.Adapt<ProductDto>();
     }

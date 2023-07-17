@@ -1,4 +1,4 @@
-﻿namespace MyAwesomeShop.Notification.WebApi;
+﻿namespace MyAwesomeShop.Notification.WebApi.Hubs;
 
 public static class ProductHubConstants
 {

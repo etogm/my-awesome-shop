@@ -1,10 +1,13 @@
-﻿using MyAwesomeShop.Shared.WebApi;
+﻿using Hellang.Middleware.ProblemDetails;
+using Hellang.Middleware.ProblemDetails.Mvc;
+
+using MyAwesomeShop.Shared.WebApi;
 
 namespace MyAwesomeShop.Catalog.WebApi;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddCatalogWebApi(this IServiceCollection services)
+    public static IServiceCollection AddCatalogWebApi(this IServiceCollection services, IHostEnvironment env)
     {
         services.AddCors();
 
@@ -12,23 +15,13 @@ public static class ConfigureServices
         {
             options.LowercaseUrls = true;
         });
+        services.AddCustomProblemDetails(env);
         services.AddControllers(options =>
         {
             options.SuppressAsyncSuffixInActionNames = false;
-        });
-        services.AddProblemDetails();
+        }).AddProblemDetailsConventions();
         services.AddWebApiSwagger();
 
         return services;
-    }
-
-    public static IApplicationBuilder UseCatalogWebApi(this IApplicationBuilder app, IHostEnvironment env)
-    {
-        app.UseWebApiSwagger();
-
-        app.UseExceptionHandler();
-        app.UseStatusCodePages();
-
-        return app;
     }
 }

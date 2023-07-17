@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
 using MyAwesomeShop.Catalog.Application.IntegrationEvents;
-using MyAwesomeShop.Notification.WebApi;
+using MyAwesomeShop.Notification.WebApi.Hubs;
 using MyAwesomeShop.Shared.Application.IntegrationEvent;
 
 internal class ProductUpdatedHandler : IIntegrationEventHandler<ProductUpdatedIntegrationEvent>
@@ -15,6 +15,6 @@ internal class ProductUpdatedHandler : IIntegrationEventHandler<ProductUpdatedIn
 
     public async Task Handle(ProductUpdatedIntegrationEvent message)
     {
-        await _hub.Clients.All.SendAsync(ProductHubConstants.ProductUpdated, message);
+        await _hub.Clients.Group(ProductHub.GetProductGroup(message.ProductId)).SendAsync(ProductHubConstants.ProductUpdated, message);
     }
 }

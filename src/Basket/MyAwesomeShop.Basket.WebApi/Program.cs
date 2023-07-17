@@ -1,10 +1,15 @@
+using Hellang.Middleware.ProblemDetails;
+using Hellang.Middleware.ProblemDetails.Mvc;
+
 using MyAwesomeShop.Basket;
-using MyAwesomeShop.Basket.Application;
-using MyAwesomeShop.Basket.Repositories;
+using MyAwesomeShop.Basket.BasketFeature;
+using MyAwesomeShop.Catalog.Application.Abstractions;
 using MyAwesomeShop.Catalog.Application.IntegrationEvents;
 using MyAwesomeShop.Shared.Application;
 using MyAwesomeShop.Shared.Infrastructure.EventBus;
 using MyAwesomeShop.Shared.WebApi;
+
+using Refit;
 
 using StackExchange.Redis;
 
@@ -14,8 +19,20 @@ builder.Host.UseCustomLogger();
 
 builder.Services.AddCors();
 
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+});
+builder.Services.AddCustomProblemDetails(builder.Environment);
+builder.Services.AddControllers(options =>
+{
+    options.SuppressAsyncSuffixInActionNames = false;
+}).AddProblemDetailsConventions();
+
 builder.Services.AddMapper();
 builder.Services.AddWebApiSwagger();
+builder.Services.AddRefitClient<ICatalogQueryService>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:62511"));
 
 builder.Services.Configure<BasketOptions>(builder.Configuration.GetSection("BasketOptions"));
 builder.Services.AddScoped<IBasketRepository, RedisBasketRepository>();
@@ -33,10 +50,17 @@ builder.Services.AddIntegrationEventHandler<ProductUpdatedIntegrationEvent, Prod
 
 var app = builder.Build();
 
-app.UseCors(policy => policy.AllowAnyOrigin());
+app.UseCors(policy =>
+{
+    policy.AllowAnyHeader();
+    policy.AllowAnyMethod();
+    policy.AllowAnyOrigin();
+});
 
+app.UseBasketSubscriptions();
+
+app.UseProblemDetails();
 app.UseWebApiSwagger();
-app.UseBasketSub();
 app.MapBasketWebApi();
 
 app.Run();

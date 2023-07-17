@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,10 +26,5 @@ public static class ConfigureServices
         });
 
         return services;
-    }
-
-    public static IApplicationBuilder UseCatalogInfrastructure(this IApplicationBuilder app)
-    {
-        return app;
     }
 }

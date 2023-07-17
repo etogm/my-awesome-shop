@@ -21,12 +21,12 @@ internal class UpdateProductCommandHandler : ICommandHandler<UpdateProductComman
 
     public async Task<ProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _context.Products.FindAsync(request.Id)
+        var product = await _context.Products.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken)
             ?? throw new EntityNotFoundException(Product.EntityName, request.Id);
 
         product.Update(request.Name, request.Description, request.Price);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return product.Adapt<ProductDto>();
     }

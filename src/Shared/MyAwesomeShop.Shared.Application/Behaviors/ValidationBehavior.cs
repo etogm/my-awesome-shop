@@ -1,6 +1,10 @@
 ﻿using FluentValidation;
+
 using MediatR;
+
 using MyAwesomeShop.Shared.Application.Messaging;
+
+namespace MyAwesomeShop.Shared.Application.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : class, ICommand<TResponse>
@@ -30,7 +34,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         {
             throw new ValidationException(errorsDictionary);
         }
-        
+
         return await next();
     }
 }

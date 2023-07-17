@@ -1,23 +1,25 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import CreateProduct from './components/CreateProduct.vue'
+import Basket from './components/Basket.vue'
+import Catalog from './components/Catalog.vue'
+import { useUserStore } from './stores/user'
+import Notifications from './components/Notifications.vue'
 
-import basketService from './services/basketService'
-
-const products = ref([])
-
-onMounted(async () => {
-  var response = await basketService.getProducts(1, 50)
-
-  console.log(response.data)
-
-  products.value = response.data.items
-})
+const user = useUserStore()
 </script>
 
 <template>
-  <ul>
-    <li v-for="product in products">{{ product.id }} {{ product.name }} {{ product.description }}</li>
-  </ul>
+  <div class="container mx-auto">
+    <div class="box">
+      <h2>Пользователь</h2>
+      <input class="forms-input" type="text" v-model="user.userId" />
+    </div>
+    <CreateProduct />
+    <Notifications />
+    <Basket />
+    <Catalog />
+  </div>
 </template>
 
 <style scoped></style>
+./services/catalogService

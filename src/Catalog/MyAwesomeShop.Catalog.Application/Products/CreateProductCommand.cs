@@ -32,8 +32,8 @@ internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProduc
     {
         var product = new Product(request.Name, request.Description, request.Price);
 
-        await _context.Products.AddAsync(product);
-        await _context.SaveChangesAsync();
+        await _context.Products.AddAsync(product, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return product.Adapt<ProductDto>();
     }

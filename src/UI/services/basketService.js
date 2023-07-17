@@ -1,11 +1,19 @@
-import { api } from './api'
+import { api } from "./api";
 
 export default {
-  getProducts(currentPage, perPage) {
-    return api.get('/products', {
+  async addToBasket(userId, productId, quantity) {
+    await api.post(`basket/users/${userId}/products?productId=${productId}&quantity=${quantity}`)
+  },
+
+  async deleteFromBasket(userId, productId) {
+    await api.delete(`basket/users/${userId}/products`, {
       params: {
-        currentPage, perPage
+        productId
       }
     })
+  },
+
+  getBasket(userId) {
+    return api.get(`basket/users/${userId}/products`)
   }
 }

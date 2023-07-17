@@ -7,7 +7,7 @@ namespace MyAwesomeShop.Shared.Infrastructure.EventBus;
 public static class ConfigureServices
 {
     public static IServiceCollection AddEventBus(this IServiceCollection services, Action<EventBusOptions> options)
-    {
+    { 
         services.Configure(options);
         services.AddSingleton<IEventBus, RedisEventBus>();
         services.AddSingleton<IEventBusDispatcher, EventBusDispatcher>();
@@ -16,8 +16,8 @@ public static class ConfigureServices
     }
 
     public static IServiceCollection AddIntegrationEventHandler<TMessage, THandler>(this IServiceCollection services)
-        where THandler : class, IIntegrationEventHandler<TMessage>
         where TMessage : IntegrationEvent
+        where THandler : class, IIntegrationEventHandler<TMessage>
     {
         services.AddScoped<IIntegrationEventHandler<TMessage>, THandler>();
         return services;

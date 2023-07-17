@@ -16,7 +16,7 @@ internal class DeleteProductCommandHandler : ICommandHandler<DeleteProductComman
 
     public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _context.Products.FindAsync(request.Id);
+        var product = await _context.Products.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
         if (product == null)
         {
@@ -24,6 +24,6 @@ internal class DeleteProductCommandHandler : ICommandHandler<DeleteProductComman
         }
 
         _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

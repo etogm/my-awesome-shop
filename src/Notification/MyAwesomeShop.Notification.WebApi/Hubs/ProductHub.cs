@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-
-using MyAwesomeShop.Notification.WebApi;
+using MyAwesomeShop.Notification.WebApi.Hubs;
 
 internal class ProductHub : Hub
 {
@@ -16,6 +15,6 @@ internal class ProductHub : Hub
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetProductGroup(productId));
     }
 
-    private static string GetProductGroup(Guid productId) =>
+    public static string GetProductGroup(Guid productId) =>
         $"product:{productId}";
 }

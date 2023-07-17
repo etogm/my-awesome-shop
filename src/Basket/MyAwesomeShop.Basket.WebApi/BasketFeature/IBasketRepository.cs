@@ -1,7 +1,6 @@
-﻿using MyAwesomeShop.Basket.Domain;
-using MyAwesomeShop.Shared;
+﻿using MyAwesomeShop.Shared;
 
-namespace MyAwesomeShop.Basket.Repositories;
+namespace MyAwesomeShop.Basket.BasketFeature;
 
 public interface IBasketRepository
 {
@@ -12,4 +11,6 @@ public interface IBasketRepository
     Task<IEnumerable<BasketProduct>> AddOrUpdateBasketAsync(Guid userId, BasketProduct product);
 
     Task UpdateProductAsync(Guid id, string name, Money price);
+
+    Task DeleteProductFromBasketAsync(Guid userId, Guid productId);
 }

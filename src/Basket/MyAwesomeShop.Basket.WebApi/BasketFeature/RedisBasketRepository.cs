@@ -2,12 +2,11 @@
 
 using Microsoft.Extensions.Options;
 
-using MyAwesomeShop.Basket.Domain;
 using MyAwesomeShop.Shared;
 
 using StackExchange.Redis;
 
-namespace MyAwesomeShop.Basket.Repositories;
+namespace MyAwesomeShop.Basket.BasketFeature;
 
 internal class RedisBasketRepository : IBasketRepository
 {
@@ -85,7 +84,12 @@ internal class RedisBasketRepository : IBasketRepository
         return Task.CompletedTask;
     }
 
-    private string GetKey(Guid? userId = null, Guid? productId = null)
+    public Task DeleteProductFromBasketAsync(Guid userId, Guid productId)
+    {
+        return _db.StringGetDeleteAsync(GetKey(userId, productId));
+    }
+
+    private static string GetKey(Guid? userId = null, Guid? productId = null)
     {
         return (userId.HasValue, productId.HasValue) switch
         {
@@ -95,7 +99,6 @@ internal class RedisBasketRepository : IBasketRepository
             _ => "*"
         };
     }
-
 }
 
 [Serializable]

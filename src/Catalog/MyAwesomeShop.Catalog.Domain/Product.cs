@@ -27,7 +27,7 @@ public class Product : Entity
 
     public Money Price { get; set; }
 
-    public static string EntityName = "Товар";
+    public const string EntityName = "Товар";
 
     public Product Update(string name, string description, Money price)
     {

@@ -1,8 +1,7 @@
-﻿using MyAwesomeShop.Basket.Repositories;
-using MyAwesomeShop.Catalog.Application.IntegrationEvents;
+﻿using MyAwesomeShop.Catalog.Application.IntegrationEvents;
 using MyAwesomeShop.Shared.Application.IntegrationEvent;
 
-namespace MyAwesomeShop.Basket.Application;
+namespace MyAwesomeShop.Basket.BasketFeature;
 
 internal class ProductUpdatedHandler : IIntegrationEventHandler<ProductUpdatedIntegrationEvent>
 {

@@ -1,7 +1,9 @@
-﻿using MyAwesomeShop.Shared;
+﻿using FluentValidation;
+
+using MyAwesomeShop.Shared;
 using MyAwesomeShop.Shared.Domain;
 
-namespace MyAwesomeShop.Basket.Domain;
+namespace MyAwesomeShop.Basket.BasketFeature;
 
 public class BasketProduct : Entity
 {

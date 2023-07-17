@@ -4,7 +4,7 @@ namespace MyAwesomeShop.Shared.Domain;
 
 public abstract class EntityBase<TId>
 {
-    private List<IDomainEvent> _events = new List<IDomainEvent>();
+    private readonly List<IDomainEvent> _events = new();
 
     public TId Id { get; set; }
 
