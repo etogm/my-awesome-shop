@@ -32,7 +32,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddMapper();
 builder.Services.AddWebApiSwagger();
 builder.Services.AddRefitClient<ICatalogQueryService>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:62511"));
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration["Uris:Catalog"]!));
 
 builder.Services.Configure<BasketOptions>(builder.Configuration.GetSection("BasketOptions"));
 builder.Services.AddScoped<IBasketRepository, RedisBasketRepository>();
