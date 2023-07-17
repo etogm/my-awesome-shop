@@ -11,17 +11,11 @@ builder.Host.UseCustomLogger();
 
 builder.Services.AddCatalogInfrastructure(builder.Configuration);
 builder.Services.AddCatalogApplication();
-builder.Services.AddCatalogWebApi(builder.Environment);
+builder.Services.AddCatalogWebApi(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
-app.UseCors(policy =>
-{
-    policy.AllowAnyHeader();
-    policy.AllowAnyMethod();
-    policy.AllowAnyOrigin();
-});
-
+app.UseCors();
 app.UseProblemDetails();
 app.UseWebApiSwagger();
 app.MapControllers();
