@@ -38,7 +38,7 @@ public static class ConfigureServices
 
         services.AddEventBus(options =>
         {
-            options.Configuration = configuration["RedisOptions:Connection"]!;
+            options.Connection = configuration["RedisOptions:Connection"]!;
         });
 
         return services;

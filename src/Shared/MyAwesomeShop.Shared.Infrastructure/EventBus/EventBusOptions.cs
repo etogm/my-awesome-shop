@@ -2,5 +2,5 @@
 
 public class EventBusOptions
 {
-    public string Configuration { get; set; }
+    public string Connection { get; set; }
 }

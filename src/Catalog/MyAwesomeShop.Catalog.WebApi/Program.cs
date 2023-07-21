@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseCustomLogger();
 
-builder.Services.AddCatalogInfrastructure(builder.Configuration);
+builder.Services.AddCatalogInfrastructure(options => builder.Configuration.GetRequiredSection("InfrastructureOptions").Bind(options));
 builder.Services.AddCatalogApplication();
 builder.Services.AddCatalogWebApi(builder.Configuration, builder.Environment);
 
@@ -17,7 +17,7 @@ var app = builder.Build();
 
 app.UseCors();
 app.UseProblemDetails();
-app.UseWebApiSwagger();
 app.MapControllers();
+app.UseWebApiSwagger();
 
 app.Run();

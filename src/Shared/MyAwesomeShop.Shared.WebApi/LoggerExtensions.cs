@@ -10,6 +10,7 @@ public static class LoggerExtensions
     {
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
+            .WriteTo.File(Environment.CurrentDirectory + "/Logs/log-", rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
         return builder.UseSerilog();

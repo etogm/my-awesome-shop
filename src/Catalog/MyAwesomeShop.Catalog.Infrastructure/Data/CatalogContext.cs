@@ -9,7 +9,7 @@ using MyAwesomeShop.Shared.Domain;
 
 namespace MyAwesomeShop.Catalog.Infrastructure.Data;
 
-public class CatalogContext : DbContext, ICatalogContext
+internal class CatalogContext : DbContext, ICatalogContext
 {
     private readonly IMediator _mediator;
 
@@ -22,6 +22,8 @@ public class CatalogContext : DbContext, ICatalogContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("catalog");
+
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
     }
 

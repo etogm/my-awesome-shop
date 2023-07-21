@@ -57,7 +57,7 @@ internal class RedisBasketRepository : IBasketRepository
         return values.Where(v => !v.IsNullOrEmpty).Select(v => JsonSerializer.Deserialize<BasketProduct>(v.ToString()))!;
     }
 
-    public Task UpdateProductAsync(Guid id, string name, Money price)
+    public async Task UpdateProductAsync(Guid id, string name, Money price)
     {
         var keys = _server.Keys(pattern: $"*:{id}");
 
@@ -80,8 +80,7 @@ internal class RedisBasketRepository : IBasketRepository
             await _db.StringSetAsync(k, JsonSerializer.Serialize(basketProduct), _expiry);
         }).ToArray();
 
-        Task.WaitAll(tasks);
-        return Task.CompletedTask;
+        await Task.WhenAll(tasks);
     }
 
     public Task DeleteProductFromBasketAsync(Guid userId, Guid productId)

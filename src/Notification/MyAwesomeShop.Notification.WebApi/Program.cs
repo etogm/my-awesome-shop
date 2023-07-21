@@ -12,7 +12,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddEventBus(options =>
 {
-    options.Configuration = builder.Configuration["RedisOptions:Connection"]!;
+    options.Connection = builder.Configuration["RedisOptions:Connection"]!;
 });
 builder.Services.AddIntegrationEventHandler<ProductUpdatedIntegrationEvent, ProductUpdatedHandler>();
 

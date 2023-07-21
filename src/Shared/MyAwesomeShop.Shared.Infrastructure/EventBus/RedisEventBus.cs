@@ -16,7 +16,7 @@ internal class RedisEventBus : IEventBus
 
     public RedisEventBus(IOptions<EventBusOptions> options, IEventBusDispatcher dispatcher)
     {
-        _connection = ConnectionMultiplexer.Connect(options.Value.Configuration);
+        _connection = ConnectionMultiplexer.Connect(options.Value.Connection);
         _dispatcher = dispatcher;
     }
 

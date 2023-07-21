@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyAwesomeShop.Catalog.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20230708184005_Initial")]
+    [Migration("20230720120224_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,6 +20,7 @@ namespace MyAwesomeShop.Catalog.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("catalog")
                 .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -45,7 +46,7 @@ namespace MyAwesomeShop.Catalog.Infrastructure.Data.Migrations
                     b.HasKey("Id")
                         .HasName("pk_products");
 
-                    b.ToTable("products", (string)null);
+                    b.ToTable("products", "catalog");
                 });
 
             modelBuilder.Entity("MyAwesomeShop.Catalog.Domain.Product", b =>
@@ -66,7 +67,7 @@ namespace MyAwesomeShop.Catalog.Infrastructure.Data.Migrations
 
                             b1.HasKey("ProductId");
 
-                            b1.ToTable("products");
+                            b1.ToTable("products", "catalog");
 
                             b1.WithOwner()
                                 .HasForeignKey("ProductId")
